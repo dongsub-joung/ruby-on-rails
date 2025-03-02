@@ -17,3 +17,4 @@ for i in string_size..0 do
 end
 puts "#{full_name_array[-1..0]}"
 puts "#{reversed_name}"
+puts "Your full name reversed is #{full_name.reverse}"
