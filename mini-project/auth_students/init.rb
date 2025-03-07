@@ -1,3 +1,5 @@
+require 'digest'
+
 class Student
 	attr_accessor :id, :pw, :name
 	@id
@@ -14,20 +16,30 @@ class Student
 	end
 end
 
+def auth?(obj,id, hashed)
+	if obj[id] == hashed
+		return true
+	else
+		return false
+	end
+end
 
 dongsub_id= "dongsub"
 dongsub_pw= "123"
-dongsub= Student.new(dongsub_id, dongsub_pw)
+hashed= Digest::MD5.hexdigest "#{dongsub_pw}"
+dongsub= Student.new(dongsub_id, hashed)
 db= { "dongsub" => dongsub }
 
 inputs= gets.chomp.split(" ")
 id= inputs[0]
 pw= inputs[1]
 
-if db.include?(id)
+input_pw_hashed= Digest::MD5.hexdigest "#{pw}"
+if db.include?(id) && auth?(db, id, input_pw_hashed)
 	p db[id]
 else 
 	someone= Student.new(id, pw)
 	db[id]= someone
 	someone.to_s
 end
+
